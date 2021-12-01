@@ -26,8 +26,8 @@ yarn run cli download-db <private-key-file>
 
 ### Creating a distribution round 
 
-To create a distribution round JSON for a given chain, round and token count:
+To create a distribution round JSON for a given chain, round, token count and private key file:
 
 ```
-yarn run cli create-round <chain-id> <round-id> <token-count>
+yarn run cli create-round <chain-id> <round-id> <token-count> <private-key-file>
 ```

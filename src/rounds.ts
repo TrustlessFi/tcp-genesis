@@ -13,8 +13,13 @@ export const createRound = async (
   chainID: number,
   roundID: number,
   tokensTotal: ethers.BigNumber,
+  privateKeyFile: string,
   _: CreateRoundOpts
 ) => {
+  if (!fs.existsSync(privateKeyFile)) {
+    throw new Error(`file not found: ${privateKeyFile}`);
+  }
+  const privateKey = fs.readFileSync(privateKeyFile).toString().trim();
   const provider = await getProvider(chainID);
   const roundFile = path.join(roundsFolder, `${chainID}-${roundID}.json`);
 
@@ -38,7 +43,7 @@ export const createRound = async (
 
   // get next debt position nft id
   const nextDebtPositionId = await contracts.huePositionNFT.nextPositionID();
-  const genesisParticipants = new Set();
+  const genesisParticipants = new Set() as Set<string>;
 
   // iterate from 0 -> next debt position ID
   // find all debt owners with positive debt + valid eth addresses
@@ -104,41 +109,37 @@ export const createRound = async (
 
   const numGenesisParticipants = genesisParticipants.size;
   const tokensPerParticipant =
-    numGenesisParticipants > 0 ? tokensTotal.div(numGenesisParticipants) : 0;
-  const name = await contracts.genesisAllocation.NAME();
-  const allocationAddress = contracts.genesisAllocation.address;
-  const signingKey = await contracts.genesisAllocation.authenticator();
+    numGenesisParticipants > 0
+      ? tokensTotal.div(numGenesisParticipants)
+      : ethers.BigNumber.from(0);
 
+  console.log(`genesis allocation: ${contracts.genesisAllocation.address}`);
   console.log(`genesis participants: ${genesisParticipants.size}`);
   console.log(`round id: ${roundID}`);
   console.log(`tokens total: ${tokensTotal}`);
   console.log(`tokens per participant: ${tokensPerParticipant}`);
-  console.log(`name: ${name}`);
-  console.log(`allocation address: ${allocationAddress}`);
-  console.log(`signing key: ${signingKey}`);
 
   console.log(`generating signatures`);
-  const signatures = new Set();
-  const nameBytes = ethers.utils.toUtf8Bytes(name);
+  const signatures = {} as { [key: string]: string };
   for (const genesisParticipant of genesisParticipants) {
-    let wallet = new ethers.Wallet(signingKey);
-    let message = ethers.utils.solidityKeccak256(
-      ["bytes", "uint", "address", "address", "uint", "uint"],
-      [
-        nameBytes,
-        chainID,
-        allocationAddress,
-        genesisParticipant,
-        roundID,
-        tokensPerParticipant,
-      ]
+    let wallet = new ethers.Wallet(privateKey);
+    const message = await contracts.genesisAllocation.getMessage(
+      genesisParticipant,
+      roundID,
+      tokensPerParticipant
     );
-
     const signature = await wallet.signMessage(ethers.utils.arrayify(message));
     console.log(`${genesisParticipant}: ${signature}`);
-    signatures.add(signature);
+    signatures[genesisParticipant] = signature;
   }
 
   console.log(`writing signatures to: ${roundFile}`);
-  fs.writeFileSync(roundFile, JSON.stringify(signatures));
+  fs.writeFileSync(
+    roundFile,
+    JSON.stringify({
+      roundID: roundID,
+      count: tokensPerParticipant.toNumber(),
+      signatures,
+    })
+  );
 };

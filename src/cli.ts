@@ -15,13 +15,22 @@ program
   .argument("<chain-id>")
   .argument("<round-id>")
   .argument("<token-count>")
-  .action((chainID: string, roundID: string, tokenCount: string, opts) =>
-    createRound(
-      parseInt(chainID),
-      parseInt(roundID),
-      ethers.BigNumber.from(tokenCount),
+  .argument("<private-key-file>")
+  .action(
+    (
+      chainID: string,
+      roundID: string,
+      tokenCount: string,
+      privateKeyFile: string,
       opts
-    )
+    ) =>
+      createRound(
+        parseInt(chainID),
+        parseInt(roundID),
+        ethers.BigNumber.from(tokenCount),
+        privateKeyFile,
+        opts
+      )
   );
 
 (async function () {

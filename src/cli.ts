@@ -8,7 +8,10 @@ const program = new Command();
 
 program.command("create-db").action(createDB);
 
-program.command("download-db").argument("<private-key>").action(downloadDB);
+program
+  .command("download-db")
+  .argument("<gcp-service-account-key-file>")
+  .action(downloadDB);
 
 program
   .command("create-round")

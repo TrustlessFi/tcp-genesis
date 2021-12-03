@@ -129,17 +129,22 @@ export const createDB = async (_: CreateDBOpts = {}) => {
 };
 
 interface DownloadDBOpts {}
-export const downloadDB = async (privateKey: string, _: DownloadDBOpts) => {
+export const downloadDB = async (
+  gcpServiceAccountKeyFile: string,
+  _: DownloadDBOpts
+) => {
   // validate options
-  if (!_pathExists(privateKey)) {
-    throw new Error(`file not found: ${privateKey}`);
+  if (!_pathExists(gcpServiceAccountKeyFile)) {
+    throw new Error(`file not found: ${gcpServiceAccountKeyFile}`);
   }
   if (_pathExists(dbFile)) {
     throw new Error(`file exists: ${dbFile}`);
   }
 
   // download gcp file
-  const storage = new gcpStorage.Storage({ keyFilename: privateKey });
+  const storage = new gcpStorage.Storage({
+    keyFilename: gcpServiceAccountKeyFile,
+  });
   const { bucket, file } = gcpDbFile;
   console.log(`Downloading gs://${bucket}/${file} -> ${dbFile}`);
   await storage

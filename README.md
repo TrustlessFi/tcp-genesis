@@ -21,7 +21,7 @@ We store a (large) SQLite database containing all eligible ETH addresses.
  This is required as one-time pre-requisite for creating distribution rounds.
 
 ```
-yarn run cli download-db <private-key-file>
+yarn run cli download-db <gcp-service-account-key-file>
 ```
 
 ### Creating a distribution round 

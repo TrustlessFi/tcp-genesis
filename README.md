@@ -24,6 +24,14 @@ We store a (large) SQLite database containing all eligible ETH addresses.
 yarn run cli download-db <gcp-service-account-key-file>
 ```
 
+### Add a hardhat address to DB
+
+You can add an address to the ETH address database:
+
+```
+yarn run cli add-address-to-db <address>
+```
+
 ### Creating a distribution round 
 
 To create a distribution round JSON for a given chain, round, token count and private key file:

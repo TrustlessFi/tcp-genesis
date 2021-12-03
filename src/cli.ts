@@ -1,12 +1,17 @@
 #!/usr/bin/env ts-node
 import { Command } from "commander";
 import * as ethers from "ethers";
-import { downloadDB, createDB } from "./ethAddresses";
+import { downloadDB, createDB, addAddressToDB } from "./ethAddresses";
 import { createRound } from "./rounds";
 
 const program = new Command();
 
 program.command("create-db").action(createDB);
+
+program
+  .command("add-address-to-db")
+  .argument("<address>")
+  .action(addAddressToDB);
 
 program
   .command("download-db")

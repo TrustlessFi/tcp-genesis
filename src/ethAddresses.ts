@@ -40,6 +40,12 @@ const _isValidAddress = (value: string) => {
   /* ensures `value` matches typical address (ignores case) */
   return _validAddressRegex.test(value);
 };
+const _addAddressToDB = async (db: sqlite.Database, address: string) => {
+  await db.run(
+    `INSERT OR IGNORE INTO addresses (address) VALUES (?)`,
+    address.toLocaleLowerCase()
+  );
+};
 
 interface CreateDBOpts {}
 
@@ -106,10 +112,7 @@ export const createDB = async (_: CreateDBOpts = {}) => {
       }
 
       // perform insert (if not exists)
-      await db.run(
-        `INSERT OR IGNORE INTO addresses (address) VALUES (?)`,
-        address.toLocaleLowerCase()
-      );
+      await _addAddressToDB(db, address);
 
       // print updated status
       counter += 1;
@@ -155,6 +158,16 @@ export const downloadDB = async (
       fs.unlinkSync(dbFile);
       throw error;
     });
+};
+
+interface AddAddressToDBOpts {}
+export const addAddressToDB = async (
+  address: string,
+  _: AddAddressToDBOpts
+) => {
+  const db = await _getDb(dbFile);
+  console.log(`Adding ${address} to database`);
+  await _addAddressToDB(db, address);
 };
 
 export const isValidEthAddress = async (value: string) => {

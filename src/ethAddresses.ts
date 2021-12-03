@@ -165,6 +165,10 @@ export const addAddressToDB = async (
   address: string,
   _: AddAddressToDBOpts
 ) => {
+  if (!_isValidAddress(address)) {
+    throw new Error(`not a valid address: ${address}`);
+  }
+
   const db = await _getDb(dbFile);
   console.log(`Adding ${address} to database`);
   await _addAddressToDB(db, address);

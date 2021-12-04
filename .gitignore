@@ -12,3 +12,5 @@ yarn-error.log
 
 keys.json
 gcp_api_key.json
+*.sqlite
+*.DS_Store

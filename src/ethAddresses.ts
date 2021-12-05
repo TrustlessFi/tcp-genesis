@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as readline from "readline";
 import * as sqlite3 from "sqlite3";
 import * as sqlite from "sqlite";
 import * as gcpStorage from "@google-cloud/storage";
 
 import { dbFile, addressesFolder, gcpDbFile } from "./const";
+import { readCsvFile } from "./csv";
 
 const _pathExists = fs.existsSync;
 const _isDirectory = (path: fs.PathLike) => fs.statSync(path).isDirectory();
@@ -13,28 +13,7 @@ const _isFile = (path: fs.PathLike) => fs.statSync(path).isFile();
 const _getDb = async (dbFile: fs.PathLike) => {
   return sqlite.open({ filename: dbFile.toString(), driver: sqlite3.Database });
 };
-async function* _readLines(file: fs.PathLike) {
-  /* reads `file` and returns an async iterator of lines found */
-  const lineReader = readline.createInterface({
-    input: fs.createReadStream(file),
-    crlfDelay: Infinity,
-  });
-  for await (const line of lineReader) {
-    yield line;
-  }
-  lineReader.close();
-  lineReader.removeAllListeners();
-}
-const _containsCsvHeader = async (header: string, csvFile: fs.PathLike) => {
-  /* ensures `csvFile` has expected headers */
-  const iter = _readLines(csvFile);
-  let headerFound = false;
-  for await (const line of iter) {
-    headerFound = line === header;
-    break;
-  }
-  return headerFound;
-};
+
 const _validAddressRegex = new RegExp(`0x[0-9a-f]{40}`, "i");
 const _isValidAddress = (value: string) => {
   /* ensures `value` matches typical address (ignores case) */
@@ -62,7 +41,6 @@ export const createDB = async (_: CreateDBOpts = {}) => {
     const filePath = path.join(addressesFolder, file);
     if (!_isFile(filePath)) continue;
     if (!csvRegexp.test(filePath)) continue;
-    if (!(await _containsCsvHeader("address", filePath))) continue;
     csvFiles.push(filePath);
   }
 
@@ -91,8 +69,6 @@ export const createDB = async (_: CreateDBOpts = {}) => {
   // iterate over found files, and insert contents
   console.log("inserting records (if not exists)");
   for (const csvFile of csvFiles) {
-    console.log(`reading: ${csvFile}`);
-
     // utilities to print statuses to stderr
     let counter = 0;
     let currStderrLine = "";
@@ -103,7 +79,7 @@ export const createDB = async (_: CreateDBOpts = {}) => {
       currStderrLine = "";
     };
 
-    for await (const address of _readLines(csvFile)) {
+    for await (const { address } of readCsvFile(["address", "asdf"], csvFile)) {
       // ignore invalid eth-addresses
       if (!_isValidAddress(address)) {
         _clearStderrLine();

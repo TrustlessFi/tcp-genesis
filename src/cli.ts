@@ -20,25 +20,16 @@ program
 
 program
   .command("create-round")
-  .argument("<chain-id>")
-  .argument("<round-id>")
-  .argument("<token-count>")
-  .argument("<private-key-file>")
-  .action(
-    (
-      chainID: string,
-      roundID: string,
-      tokenCount: string,
-      privateKeyFile: string,
-      opts
-    ) =>
-      createRound(
-        parseInt(chainID),
-        parseInt(roundID),
-        ethers.BigNumber.from(tokenCount),
-        privateKeyFile,
-        opts
-      )
+  .requiredOption("-g, --genesis-data-file <genesis-data-file>")
+  .requiredOption("-p, --private-key-file <private-key-file>")
+  .requiredOption("-r, --round-id <round-id>")
+  .requiredOption("-t, --total-token-count <total-token-count>")
+  .action(({ roundId, totalTokenCount, ...args }) =>
+    createRound({
+      roundID: parseInt(roundId),
+      totalTokenCount: parseInt(totalTokenCount),
+      ...args,
+    })
   );
 
 (async function () {

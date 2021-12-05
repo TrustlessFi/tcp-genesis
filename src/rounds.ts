@@ -2,144 +2,189 @@ import * as ethers from "ethers";
 import * as fs from "fs";
 import * as path from "path";
 
-import { isValidEthAddress } from "./ethAddresses";
 import { roundsFolder } from "./const";
-import { getContract, ProtocolContract } from "./contracts";
-import { getProvider } from "./providers";
+import { isValidEthAddress } from "./ethAddresses";
 
-interface CreateRoundOpts {}
+interface _GetMessageArgs {
+  roundID: number;
+  chainID: number;
+  tokenCount: ethers.BigNumber;
+  address: string;
+  genesisAllocationAddress: string;
+}
+const _getMessage = async ({
+  genesisAllocationAddress,
+  address,
+  roundID,
+  chainID,
+  tokenCount,
+}: _GetMessageArgs) => {
+  const name = "Tcp Genesis Allocation";
 
-export const createRound = async (
-  chainID: number,
-  roundID: number,
-  tokensTotal: ethers.BigNumber,
-  privateKeyFile: string,
-  _: CreateRoundOpts
-) => {
-  if (!fs.existsSync(privateKeyFile)) {
-    throw new Error(`file not found: ${privateKeyFile}`);
-  }
-  const privateKey = fs.readFileSync(privateKeyFile).toString().trim();
-  const provider = await getProvider(chainID);
-  const roundFile = path.join(roundsFolder, `${chainID}-${roundID}.json`);
-
-  const contracts = {
-    accounting: await getContract(
+  return ethers.utils.solidityKeccak256(
+    ["bytes", "uint", "address", "address", "uint16", "uint128"],
+    [
+      ethers.utils.toUtf8Bytes(name),
       chainID,
-      ProtocolContract.Accounting,
-      provider
-    ),
-    huePositionNFT: await getContract(
-      chainID,
-      ProtocolContract.HuePositionNFT,
-      provider
-    ),
-    genesisAllocation: await getContract(
-      chainID,
-      ProtocolContract.GenesisAllocation,
-      provider
-    ),
-  };
-
-  // get next debt position nft id
-  const nextDebtPositionId = await contracts.huePositionNFT.nextPositionID();
-  const genesisParticipants = new Set() as Set<string>;
-
-  // iterate from 0 -> next debt position ID
-  // find all debt owners with positive debt + valid eth addresses
-  console.log(
-    "finding eligible genesis participants by iterating over all debt positions"
-  );
-  console.log(`max debt position id: ${nextDebtPositionId}`);
-  for (
-    let debtPositionID = ethers.BigNumber.from(0);
-    debtPositionID < nextDebtPositionId;
-    debtPositionID = debtPositionID.add(1)
-  ) {
-    const debtPosition = await contracts.accounting.getPosition(debtPositionID);
-    const owner = await contracts.huePositionNFT.ownerOf(debtPositionID);
-
-    const log = (msg: string) =>
-      console.log(`(${debtPositionID}) ${owner}: ${msg}`);
-
-    // if debt owner is considered 'invalid', ignore
-    if (!(await isValidEthAddress(owner))) {
-      log(`ineligible (invalid owner address)`);
-      continue;
-    }
-
-    // if debt position <= 0, ignore
-    if (!debtPosition.debt.gt(0)) {
-      log(`ineligible (non-positive debt position)`);
-      continue;
-    }
-
-    // if debt owner is already included in genesis participants - ignore
-    if (genesisParticipants.has(owner)) {
-      log(`eligible (owner already eligible)`);
-      continue;
-    }
-
-    // fetch all liquidity positions for debt owner
-    const liquidityPositionIDs =
-      await contracts.accounting.getPoolPositionNftIdsByOwner(owner);
-    let positiveLiquidityPosition: null | Awaited<
-      ReturnType<typeof contracts.accounting.getPoolPosition>
-    > = null;
-    // determine if debt owner has any positive liquidity positions
-    for (const liquidityPositionID of liquidityPositionIDs) {
-      const liquidityPosition = await contracts.accounting.getPoolPosition(
-        liquidityPositionID
-      );
-      if (liquidityPosition.liquidity.gt(0)) {
-        positiveLiquidityPosition = liquidityPosition;
-        break;
-      }
-    }
-    if (positiveLiquidityPosition === null) {
-      log(`ineligible (non-positive liquidity position)`);
-      continue;
-    }
-
-    // address has positive debt position and positive liquidity position
-    // - add to genesis participants
-    log(`eligible (positive debt and liquidity positions)`);
-    genesisParticipants.add(owner);
-  }
-
-  const numGenesisParticipants = genesisParticipants.size;
-  const tokensPerParticipant =
-    numGenesisParticipants > 0
-      ? tokensTotal.div(numGenesisParticipants)
-      : ethers.BigNumber.from(0);
-
-  console.log(`genesis allocation: ${contracts.genesisAllocation.address}`);
-  console.log(`genesis participants: ${genesisParticipants.size}`);
-  console.log(`round id: ${roundID}`);
-  console.log(`tokens total: ${tokensTotal}`);
-  console.log(`tokens per participant: ${tokensPerParticipant}`);
-
-  console.log(`generating signatures`);
-  const signatures = {} as { [key: string]: string };
-  for (const genesisParticipant of genesisParticipants) {
-    let wallet = new ethers.Wallet(privateKey);
-    const message = await contracts.genesisAllocation.getMessage(
-      genesisParticipant,
+      genesisAllocationAddress,
+      address,
       roundID,
-      tokensPerParticipant
-    );
-    const signature = await wallet.signMessage(ethers.utils.arrayify(message));
-    console.log(`${genesisParticipant}: ${signature}`);
-    signatures[genesisParticipant] = signature;
+      tokenCount,
+    ]
+  );
+};
+
+const _bnf = ethers.BigNumber.from;
+const _scale = (quantity: number, decimals = 18): ethers.BigNumber => {
+  if (decimals < 6) throw new Error("too few decimals: " + decimals);
+  const bigInt = BigInt(Math.round(quantity * 1e6));
+  return _bnf(bigInt.toString() + "0".repeat(decimals - 6));
+};
+const _unscale = (quantity: ethers.BigNumber, decimals = 18): number => {
+  const digits = quantity.toString().length;
+  let digitsToRemove = digits - 15;
+  if (digitsToRemove > decimals) {
+    throw new Error("number too large");
+  }
+  while (digitsToRemove > 9) {
+    quantity = quantity.div(1e9);
+    digitsToRemove -= 9;
+    decimals -= 9;
+  }
+  let num;
+  if (digitsToRemove > 0) {
+    decimals -= digitsToRemove;
+    num = quantity.div(10 ** digitsToRemove).toNumber();
+  } else {
+    num = quantity.toNumber();
+  }
+  return num / 10 ** decimals;
+};
+
+interface _GenesisData {
+  chainID: number;
+  genesisAllocationAddress: string;
+  liquidityPositions: string[];
+  debtPositions: string[];
+}
+interface _SignatureData {
+  signature: string;
+  tokenCount: string;
+}
+interface _RoundData {
+  roundID: number;
+  signatures: { [key: string]: _SignatureData };
+}
+
+interface CreateRoundOpts {
+  genesisDataFile: string;
+  privateKeyFile: string;
+  roundID: number;
+  totalTokenCount: number;
+}
+export const createRound = async (opts: CreateRoundOpts) => {
+  const { genesisDataFile, privateKeyFile, totalTokenCount, roundID } = opts;
+
+  // ensure file paths exist
+  for (const path of [genesisDataFile, privateKeyFile]) {
+    if (!fs.existsSync(path)) {
+      throw new Error(`file not found: ${path}`);
+    }
   }
 
+  // parse genesis data
+  const genesisData = JSON.parse(
+    fs.readFileSync(genesisDataFile).toString()
+  ) as _GenesisData;
+  const {
+    genesisAllocationAddress,
+    chainID,
+    liquidityPositions,
+    debtPositions,
+  } = genesisData;
+
+  console.log(`genesis data: ${genesisDataFile}`);
+  console.log(`private key: ${privateKeyFile}`);
+  console.log(`genesis allocation address: ${genesisAllocationAddress}`);
+  console.log(`total tokens: ${totalTokenCount}`);
+  console.log(`round id: ${roundID}`);
+  console.log(`chain id: ${chainID}`);
+  console.log(`====================`);
+
+  const scoreMap = {} as { [key: string]: number };
+
+  // accumulate debt positions
+  console.log(`debt positions: ${debtPositions.length}`);
+  for (const address of debtPositions) {
+    if (!scoreMap[address]) scoreMap[address] = 0;
+    scoreMap[address] += 1;
+  }
+
+  // accumulate liquidity positions
+  console.log(`liquidity positions: ${liquidityPositions.length}`);
+  for (const address of liquidityPositions) {
+    if (!scoreMap[address]) scoreMap[address] = 0;
+    scoreMap[address] += 1;
+  }
+
+  // unset scores for 'invalid' eth addresses
+  const invalidAddresses = new Set() as Set<string>;
+  for (const address of Object.keys(scoreMap)) {
+    if (!(await isValidEthAddress(address))) {
+      scoreMap[address] = 0;
+      invalidAddresses.add(address);
+    }
+  }
+  console.log(`invalid addresses: ${invalidAddresses.size}`);
+
+  // calculate total score
+  let totalScore = 0;
+  Object.values(scoreMap).map((score) => (totalScore += score));
+  console.log(`total addresses: ${Object.keys(scoreMap).length}`);
+  console.log(`total score: ${totalScore}`);
+  console.log(`====================`);
+
+  // generate signatures
+  console.log(`generating signatures`);
+  const privateKey = fs.readFileSync(privateKeyFile).toString().trim();
+  const signatures = {} as { [key: string]: _SignatureData };
+  const wallet = new ethers.Wallet(privateKey);
+  for (const [address, score] of Object.entries(scoreMap)) {
+    const log = (score: number, tokenCount: number, message: string) => {
+      console.log(
+        `${address} (score: ${score}, tokens: ${tokenCount}): ${message}`
+      );
+    };
+
+    // skip addresses with a zero score
+    if (score === 0) {
+      log(score, 0, "ineligible");
+      continue;
+    }
+
+    // calculate token count as a score-based percentage of total count
+    const tokenCount = _scale((score / totalScore) * totalTokenCount);
+
+    // generate message and sign it
+    const message = await _getMessage({
+      chainID,
+      roundID,
+      genesisAllocationAddress,
+      address,
+      tokenCount,
+    });
+    const signature = await wallet.signMessage(ethers.utils.arrayify(message));
+
+    // add to payload
+    log(score, _unscale(tokenCount), signature);
+    signatures[address] = { signature, tokenCount: tokenCount.toHexString() };
+  }
+
+  // generate round payload
+  const roundFile = path.join(roundsFolder, `${chainID}-${roundID}.json`);
+  const roundData = { roundID, signatures } as _RoundData;
+
+  // serialize round payload
   console.log(`writing signatures to: ${roundFile}`);
-  fs.writeFileSync(
-    roundFile,
-    JSON.stringify({
-      roundID: roundID,
-      count: tokensPerParticipant.toNumber(),
-      signatures,
-    })
-  );
+  fs.writeFileSync(roundFile, JSON.stringify(roundData));
 };

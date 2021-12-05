@@ -15,6 +15,14 @@ Copy `localHardhatAddresses.json` to `src/contracts/localHardhatAddresses.json`.
 
 ## Usage
 
+### Help
+
+View command help and usage
+
+```
+yarn run cli <cmd?> --help
+```
+
 ### Download ETH Address DB
 
 We store a (large) SQLite database containing all eligible ETH addresses.
@@ -34,8 +42,12 @@ yarn run cli add-address-to-db <address>
 
 ### Creating a distribution round 
 
-To create a distribution round JSON for a given chain, round, token count and private key file:
+To create a distribution round JSON, obtain genesis data from the `tdao-ui` and run the following:
 
 ```
-yarn run cli create-round <chain-id> <round-id> <token-count> <private-key-file>
+yarn run cli create-round \
+  --genesis-data-file <genesis-data-file> \
+  --round-id <round-id> \
+  --total-token-count <total-token-count> \
+  --private-key-file <private-key-file>
 ```

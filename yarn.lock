@@ -530,40 +530,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trustlessfi/addresses@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@trustlessfi/addresses@npm:0.4.0"
+"@trustlessfi/addresses@npm:^0.4.14":
+  version: 0.4.14
+  resolution: "@trustlessfi/addresses@npm:0.4.14"
   dependencies:
-    "@trustlessfi/utils": ^0.2.4
-    "@types/node": ^16.11.9
-  checksum: 4daea0c46662ac6e7750f42dcb2328f5770ec9b9e0b9cc004f5919e113c770d33a37b3484b47121153c317abe9031f0cdf72613f4d74506305b5c34476063393
+    "@trustlessfi/utils": ^0.2.8
+    "@types/node": ^16.11.11
+    typescript: ^4.5.3
+  checksum: 2d1ea6d6963ec707ac348397b46783751bb9c09582d5f0b499de8fe6e2061353a5eaf9d8ad47caf46e9b370851c86274c94dbc9a1c6984d010e0b90d662f7c85
   languageName: node
   linkType: hard
 
-"@trustlessfi/artifacts@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@trustlessfi/artifacts@npm:0.1.1"
-  checksum: 8c603a23214b1da0cd5da838d321e72ab98698961ad8f4cbaa8dca6a15e521dc02501f65e16233eba417399ad893ccb65a7eabde3a26ce41764f786f8448bf3a
+"@trustlessfi/artifacts@npm:^0.1.23":
+  version: 0.1.23
+  resolution: "@trustlessfi/artifacts@npm:0.1.23"
+  checksum: bc5673054a56bbc28404ed4bd754b69028b79df581bcc557f7dd10dbe01ffbdd4c5151ec25360f4af6ee29398344a45c7783c3adb3fdf9471d580f086c0c1d5b
   languageName: node
   linkType: hard
 
-"@trustlessfi/typechain@npm:^0.6.1":
-  version: 0.6.1
-  resolution: "@trustlessfi/typechain@npm:0.6.1"
+"@trustlessfi/typechain@npm:^0.6.28":
+  version: 0.6.28
+  resolution: "@trustlessfi/typechain@npm:0.6.28"
   dependencies:
     "@ethersproject/abi": ^5.5.0
     "@ethersproject/providers": ^5.5.0
     ethers: ^5.5.1
-  checksum: ddb5683d06d52d4766716e1667383da87a581af39709de423bac8c25925cf2f3f2fccff8cb6d9191f8720ef0ccd29c2eca60f9b05365428dfb9afb73d3917cac
+  checksum: 257bec3cd11f85869a1618ff35e310aedfec91c67198a0b0c0cda0539d48e2de2ea20311d23be3cb2ffc17b01230aba68bda5fdeb9ad61e31b6e31eb47d4b570
   languageName: node
   linkType: hard
 
-"@trustlessfi/utils@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@trustlessfi/utils@npm:0.2.4"
+"@trustlessfi/utils@npm:^0.2.8":
+  version: 0.2.9
+  resolution: "@trustlessfi/utils@npm:0.2.9"
   dependencies:
     ethers: ^5.4.7
-  checksum: 5b56810d037ff89cc08f2f82ed0ed34556d1e11c36d5bc70711685601f70accd1771ead96d6d8e1971ebb9fc25a2641ff8dfe87651ceb905ffcea9ba3b6922ed
+  checksum: 1e1fd6408b28c41d9d29f826e2418307f6d08a47380a77a1bc61554893115fb427e7759c47d5921dbcfccab9ed2c646a59c0028ff85ea5052230d1e4f9f2e44c
   languageName: node
   linkType: hard
 
@@ -602,10 +603,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.11.9":
-  version: 16.11.11
-  resolution: "@types/node@npm:16.11.11"
-  checksum: 1c472bd63f23ca0e4effc96e6e0c693b83b027f613a1f41b6d1bd7791f65ce171a351e0a5c92575cb59e84ad0a930875397bfbbb91a7c925ddbbb558f7461af8
+"@types/node@npm:^16.11.11":
+  version: 16.11.17
+  resolution: "@types/node@npm:16.11.17"
+  checksum: 86ed84f79450f6aba1a6ef09f8407c10076966c3cc7cc4eb3d35b8ae4f47817e525641396ef0a667fa0a88fcdf484f6182812c074601403083bdf3b5e1ac0313
   languageName: node
   linkType: hard
 
@@ -2846,9 +2847,9 @@ __metadata:
   resolution: "tdao-genesis@workspace:."
   dependencies:
     "@google-cloud/storage": ^5.16.0
-    "@trustlessfi/addresses": ^0.4.0
-    "@trustlessfi/artifacts": ^0.1.1
-    "@trustlessfi/typechain": ^0.6.1
+    "@trustlessfi/addresses": ^0.4.14
+    "@trustlessfi/artifacts": ^0.1.23
+    "@trustlessfi/typechain": ^0.6.28
     "@types/node": ^16.11.10
     "@types/sqlite3": ^3.1.7
     commander: ^8.3.0
@@ -2962,6 +2963,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.5.3":
+  version: 4.5.4
+  resolution: "typescript@npm:4.5.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 59f3243f9cd6fe3161e6150ff6bf795fc843b4234a655dbd938a310515e0d61afd1ac942799e7415e4334255e41c2c49b7dd5d9fd38a17acd25a6779ca7e0961
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^4.5.2#~builtin<compat/typescript>":
   version: 4.5.2
   resolution: "typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>::version=4.5.2&hash=493e53"
@@ -2969,6 +2980,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 53838d56aba6fcc947d63aa0771e5d966b1b648fddafed6e221d7f38c71219c4e036ece8cfe9e35ed80cf5a35ff4eb958934c993f99c3233773ec4f9ccd53f69
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.5.3#~builtin<compat/typescript>":
+  version: 4.5.4
+  resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 2e488dde7d2c4a2fa2e79cf2470600f8ce81bc0563c276b72df8ff412d74456ae532ba824650ae936ce207440c79720ddcfaa25e3cb4477572b8534fa4e34d49
   languageName: node
   linkType: hard
 

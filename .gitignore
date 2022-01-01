@@ -1,6 +1,3 @@
-src/contracts/localHardhatAddresses.json
-.idea
-dist
 node_modules
 yarn-error.log
 .yarn/*
@@ -10,7 +7,12 @@ yarn-error.log
 !.yarn/versions
 
 
+src/contracts/protocolAddresses.json
+.idea
+dist
+
 keys.json
 gcp_api_key.json
 *.sqlite
 *.DS_Store
+genesisDataFiles/*

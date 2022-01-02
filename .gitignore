@@ -11,8 +11,10 @@ src/contracts/protocolAddresses.json
 .idea
 dist
 
+key.txt
 keys.json
 gcp_api_key.json
+fleekApiKeys.json
 *.sqlite
 *.DS_Store
 genesisDataFiles/*

@@ -22,7 +22,7 @@ const _getMessage = async ({
   const name = "Tcp Genesis Allocation";
 
   return ethers.utils.solidityKeccak256(
-    ["bytes", "uint", "address", "address", "uint16", "uint128"],
+    ["bytes", "uint", "address", "address", "uint256", "uint128"],
     [
       ethers.utils.toUtf8Bytes(name),
       chainID,

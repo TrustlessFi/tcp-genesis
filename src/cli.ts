@@ -3,8 +3,15 @@ import { Command } from "commander";
 import * as ethers from "ethers";
 import { downloadDB, createDB, addAddressToDB } from "./ethAddresses";
 import { createRound } from "./rounds";
+import { storeInFleek } from './storeInFleek'
 
 const program = new Command();
+
+program
+  .command("store-in-fleek")
+  .requiredOption("-a, --fleek-api-keys-file <fleek-api-keys-file>")
+  .requiredOption("-f, --file <file>")
+  .action(storeInFleek)
 
 program.command("create-db").action(createDB);
 

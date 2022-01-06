@@ -247,7 +247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.5.0, @ethersproject/providers@npm:^5.5.0":
+"@ethersproject/providers@npm:5.5.0":
   version: 5.5.0
   resolution: "@ethersproject/providers@npm:5.5.0"
   dependencies:
@@ -542,41 +542,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trustlessfi/addresses@npm:^0.4.14":
-  version: 0.4.14
-  resolution: "@trustlessfi/addresses@npm:0.4.14"
+"@trustlessfi/addresses@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@trustlessfi/addresses@npm:0.5.3"
   dependencies:
-    "@trustlessfi/utils": ^0.2.8
     "@types/node": ^16.11.11
     typescript: ^4.5.3
-  checksum: 2d1ea6d6963ec707ac348397b46783751bb9c09582d5f0b499de8fe6e2061353a5eaf9d8ad47caf46e9b370851c86274c94dbc9a1c6984d010e0b90d662f7c85
-  languageName: node
-  linkType: hard
-
-"@trustlessfi/artifacts@npm:^0.1.23":
-  version: 0.1.23
-  resolution: "@trustlessfi/artifacts@npm:0.1.23"
-  checksum: bc5673054a56bbc28404ed4bd754b69028b79df581bcc557f7dd10dbe01ffbdd4c5151ec25360f4af6ee29398344a45c7783c3adb3fdf9471d580f086c0c1d5b
-  languageName: node
-  linkType: hard
-
-"@trustlessfi/typechain@npm:^0.6.28":
-  version: 0.6.28
-  resolution: "@trustlessfi/typechain@npm:0.6.28"
-  dependencies:
-    "@ethersproject/abi": ^5.5.0
-    "@ethersproject/providers": ^5.5.0
-    ethers: ^5.5.1
-  checksum: 257bec3cd11f85869a1618ff35e310aedfec91c67198a0b0c0cda0539d48e2de2ea20311d23be3cb2ffc17b01230aba68bda5fdeb9ad61e31b6e31eb47d4b570
-  languageName: node
-  linkType: hard
-
-"@trustlessfi/utils@npm:^0.2.8":
-  version: 0.2.9
-  resolution: "@trustlessfi/utils@npm:0.2.9"
-  dependencies:
-    ethers: ^5.4.7
-  checksum: 1e1fd6408b28c41d9d29f826e2418307f6d08a47380a77a1bc61554893115fb427e7759c47d5921dbcfccab9ed2c646a59c0028ff85ea5052230d1e4f9f2e44c
+  checksum: bb2a5fd7bfeb10bc1c59a3b5592704b633f3be1cdbe358a89f196928f7007cb77fee7f0288e06e27a11da235727f5e97f2b59794d8d67fd152ffd0fc069ad0a2
   languageName: node
   linkType: hard
 
@@ -605,6 +577,15 @@ __metadata:
   version: 1.0.2
   resolution: "@tsconfig/node16@npm:1.0.2"
   checksum: ca94d3639714672bbfd55f03521d3f56bb6a25479bd425da81faf21f13e1e9d15f40f97377dedbbf477a5841c5b0c8f4cd1b391f33553d750b9202c54c2c07aa
+  languageName: node
+  linkType: hard
+
+"@types/node-fetch@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@types/node-fetch@npm:3.0.3"
+  dependencies:
+    node-fetch: "*"
+  checksum: 1d46abfda354d7d423f5873f6bd07550f170c869ca33740b0e170265d3b65f76f9cac5f83fa0c4aa7afee66a6e1b14d4c4edd0297133fd186fef21fb53727413
   languageName: node
   linkType: hard
 
@@ -843,6 +824,15 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.0
   checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.24.0":
+  version: 0.24.0
+  resolution: "axios@npm:0.24.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 468cf496c08a6aadfb7e699bebdac02851e3043d4e7d282350804ea8900e30d368daa6e3cd4ab83b8ddb5a3b1e17a5a21ada13fc9cebd27b74828f47a4236316
   languageName: node
   linkType: hard
 
@@ -1094,6 +1084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"data-uri-to-buffer@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "data-uri-to-buffer@npm:4.0.0"
+  checksum: a010653869abe8bb51259432894ac62c52bf79ad761d418d94396f48c346f2ae739c46b254e8bb5987bded8a653d467db1968db3a69bab1d33aa5567baa5cfc7
+  languageName: node
+  linkType: hard
+
 "date-and-time@npm:^2.0.0":
   version: 2.0.1
   resolution: "date-and-time@npm:2.0.1"
@@ -1267,7 +1264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^5.4.7, ethers@npm:^5.5.1":
+"ethers@npm:^5.5.1":
   version: 5.5.1
   resolution: "ethers@npm:5.5.1"
   dependencies:
@@ -1361,7 +1358,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0":
+"fetch-blob@npm:^3.1.2":
+  version: 3.1.3
+  resolution: "fetch-blob@npm:3.1.3"
+  dependencies:
+    web-streams-polyfill: ^3.0.3
+  checksum: 7be20e9c9a936601c280ef3cfed1968dbcfb35e31564b9bdc807b48de73587cd358b7c3965a3f03483f5268dc373ae8526608947750f22eb214e20c94efab9c1
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4":
   version: 1.14.6
   resolution: "follow-redirects@npm:1.14.6"
   peerDependenciesMeta:
@@ -1386,6 +1392,15 @@ __metadata:
     combined-stream: ^1.0.6
     mime-types: ^2.1.12
   checksum: 10c1780fa13dbe1ff3100114c2ce1f9307f8be10b14bf16e103815356ff567b6be39d70fc4a40f8990b9660012dc24b0f5e1dde1b6426166eb23a445ba068ca3
+  languageName: node
+  linkType: hard
+
+"formdata-polyfill@npm:^4.0.10":
+  version: 4.0.10
+  resolution: "formdata-polyfill@npm:4.0.10"
+  dependencies:
+    fetch-blob: ^3.1.2
+  checksum: 82a34df292afadd82b43d4a740ce387bc08541e0a534358425193017bf9fb3567875dc5f69564984b1da979979b70703aa73dee715a17b6c229752ae736dd9db
   languageName: node
   linkType: hard
 
@@ -2192,6 +2207,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:*":
+  version: 3.1.0
+  resolution: "node-fetch@npm:3.1.0"
+  dependencies:
+    data-uri-to-buffer: ^4.0.0
+    fetch-blob: ^3.1.2
+    formdata-polyfill: ^4.0.10
+  checksum: 23b5977554d21b72d7d99145d00bcf06e463fa621bf0afc276ad121a79509a133f38c7e470b34aad45d4032d3315bf5584ff6a1cb83e8f01be7a44cc7ac72693
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^2.6.1":
   version: 2.6.6
   resolution: "node-fetch@npm:2.6.6"
@@ -2973,11 +2999,11 @@ __metadata:
   dependencies:
     "@fleekhq/fleek-storage-js": ^1.0.20
     "@google-cloud/storage": ^5.16.0
-    "@trustlessfi/addresses": ^0.4.14
-    "@trustlessfi/artifacts": ^0.1.23
-    "@trustlessfi/typechain": ^0.6.28
+    "@trustlessfi/addresses": ^0.5.3
     "@types/node": ^16.11.10
+    "@types/node-fetch": ^3.0.3
     "@types/sqlite3": ^3.1.7
+    axios: ^0.24.0
     commander: ^8.3.0
     ethers: ^5.5.1
     prettier: ^2.5.0
@@ -3207,6 +3233,13 @@ __metadata:
     core-util-is: 1.0.2
     extsprintf: ^1.2.0
   checksum: c431df0bedf2088b227a4e051e0ff4ca54df2c114096b0c01e1cbaadb021c30a04d7dd5b41ab277bcd51246ca135bf931d4c4c796ecae7a4fef6d744ecef36ea
+  languageName: node
+  linkType: hard
+
+"web-streams-polyfill@npm:^3.0.3":
+  version: 3.2.0
+  resolution: "web-streams-polyfill@npm:3.2.0"
+  checksum: e23ad0649392fa0159dbfc6bb27474c308c3f332d9078cfef3c06c154165bef18732c5814126147c6c712f604216ddc950c171c854e3821f020e0d2d721a5958
   languageName: node
   linkType: hard
 

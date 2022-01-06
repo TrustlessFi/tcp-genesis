@@ -12,6 +12,7 @@ src/contracts/protocolAddresses.json
 dist
 
 key.txt
+rinkeby_key.txt
 keys.json
 gcp_api_key.json
 fleekApiKeys.json

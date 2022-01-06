@@ -1,1 +1,27 @@
-{"roundID":0,"signatures":{"0x1F1202B6Ea313AD6b25d88CDcDbD745eC965B40A":{"signature":"0x858f80e84d6ba34dbbd31095b994e4e2dfe1f9b64a7fb7e57a589e73429545a23ecccba0d21a5417da2584d4036dd1c6f10a8afa7e5054639d936e237f416bf01b","tokenCount":"0x01454bfa8cbdee39b000"},"0x9acF88832A9846634B46DF4D6C93f16D03DDea0C":{"signature":"0x57f13dcb9a5adbe700b3cdd73cb722917bcf794e658d060845b1a0464fcdec73167ebe6d345855b5058df48c4f527b1a903303204e28781cde0e414029a920951b","tokenCount":"0xa2a5fd45ea8cca5000"}}}
+{
+  "roundID": 0,
+  "chainID": 1337,
+  "signatures": {
+    "0x1F1202B6Ea313AD6b25d88CDcDbD745eC965B40A": {
+      "signature": "0x4774fbc8bcf03b9d138d3f67548482586a51298dab57c00d3ada525ff61d74436963b3b3f75180c47c1832fa1126911e9a5d7c820928f6806aaeb7d51eb9166c1b",
+      "tokenCount": "0x017c15cbd6ba38965000"
+    },
+    "0x9acF88832A9846634B46DF4D6C93f16D03DDea0C": {
+      "signature": "0xd4a0a148d0d2aa09c278cd627239bc63031e87a870036a71c1f01ab63c1147b13b445073d50f4c74905ccf8a45268bfde56a5f70fb38923fc6fccc6d6c2a05f81c",
+      "tokenCount": "0x02f82b97ae5d45d1b000"
+    }
+  },
+  "count": 21034,
+  "otherRounds": {
+    "roundIDtoURI": {
+      "0": {
+        "ipfsHash": "bafybeib4d625tnsnvn44xtjirkgx7wlwlpqilo66z25zyzzp4zdlujmwta",
+        "fleekURI": "https://storageapi.fleek.co/82a6b1b7-3af3-4fe5-9b08-905872a08618-bucket/data/rounds/1337-0.json"
+      },
+      "1": {
+        "ipfsHash": "bafybeifjerjt7tbamnguxaolnvdialis2wqiyxp6tztjzdu74ky2y4tnja",
+        "fleekURI": "https://storageapi.fleek.co/82a6b1b7-3af3-4fe5-9b08-905872a08618-bucket/data/rounds/1337-1.json"
+      }
+    }
+  }
+}
